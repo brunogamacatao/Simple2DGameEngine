@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.RenderingHints;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
@@ -21,7 +22,7 @@ import javax.swing.SwingUtilities;
 public abstract class SimpleWindowedGame extends JFrame implements KeyListener {
 	private static final long serialVersionUID = 8563172519415369467L;
 
-	public static final long FRAME_DELAY = 15; // +- 60 FPS
+	public static final long DEFAULT_FRAME_DELAY = 15; // +- 60 FPS
 	
 	private int width;
 	private int height;
@@ -32,6 +33,7 @@ public abstract class SimpleWindowedGame extends JFrame implements KeyListener {
 	private BufferedImage bi;
 	private Color background;
 	private boolean[] keys;
+	private long frameDelay;
 	
 	public SimpleWindowedGame() {
 		this("Simple Windowed Game");
@@ -47,6 +49,7 @@ public abstract class SimpleWindowedGame extends JFrame implements KeyListener {
 		this.width = width;
 		this.height = height;
 		this.background = background;
+		this.frameDelay = DEFAULT_FRAME_DELAY;
 		
 		this.setIgnoreRepaint(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -91,6 +94,12 @@ public abstract class SimpleWindowedGame extends JFrame implements KeyListener {
 				try {
 					// clear back buffer...
 					g2d = bi.createGraphics();
+					
+			        RenderingHints rh = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			        rh.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+
+			        g2d.setRenderingHints(rh);		
+					
 					g2d.setColor(background);
 					g2d.fillRect(0, 0, width, height);
 					
@@ -104,7 +113,7 @@ public abstract class SimpleWindowedGame extends JFrame implements KeyListener {
 					}
 	
 					// Let the OS have a little time...
-					Thread.sleep(FRAME_DELAY);
+					Thread.sleep(frameDelay);
 				} catch (InterruptedException ex) {
 					// does nothing
 				} finally {
@@ -155,6 +164,14 @@ public abstract class SimpleWindowedGame extends JFrame implements KeyListener {
 	
 	public boolean isKeyPressed(int keyCode) {
 		return keys[keyCode];
+	}
+
+	public long getFrameDelay() {
+		return frameDelay;
+	}
+
+	public void setFrameDelay(long frameDelay) {
+		this.frameDelay = frameDelay;
 	}
 
 	@Override
