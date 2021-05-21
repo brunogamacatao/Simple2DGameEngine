@@ -1,5 +1,6 @@
 package br.brunocatao.s2ge.arkanoid;
 
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import br.brunocatao.s2ge.SimpleWindowedGame;
@@ -25,7 +26,6 @@ public class Bola extends Sprite {
 		// checar as colisões da bola com o cenário
 		if (getY() >= janela.getHeight() - getAltura()) {
 			velocidadeY = -velocidadeY;
-			System.exit(0);
 		}
 		if (getY() <= 0) {
 			velocidadeY = -velocidadeY;
@@ -39,73 +39,53 @@ public class Bola extends Sprite {
 	}
 	
 	public boolean checaColisao(Sprite s) {
+		return checaColisao(s, false);
+	}
+	
+	public boolean checaColisao(Sprite s, boolean variaAngulo) {
+		boolean colidiu = false;
+		
 		if (bolaColideEmCima(s) || bolaColideEmBaixo(s)) {
 			velocidadeY = -velocidadeY;
-			return true;
+			
+			if (variaAngulo) {
+				double meioBola = this.getX() + this.getLargura() / 2.0;
+				double meioS = s.getX() + s.getLargura() / 2.0;
+				velocidadeX = (int)((meioBola - meioS) * 0.15);
+			}
+			
+			colidiu = true;
 		}
 		
 		if (bolaColideNaEsquerda(s) || bolaColideNaDireita(s)) {
 			velocidadeX = -velocidadeX;
-			return true;
+			colidiu = true;
 		}
 		
-		return false;
+		return colidiu;
 	}
 	
 	private boolean bolaColideEmCima(Sprite s) {
-		if ((getX() + getLargura()) > s.getX()) {
-			if (getX() < s.getX() + s.getLargura()) {
-				if ((getY() + getAltura()) >= s.getY()) {
-					if ((getY() + getAltura()) < (s.getY() + s.getAltura() / 2)) {
-						return true;
-					}
-				}
-			}
-		}
-		
-		return false;
+		Rectangle rBola = new Rectangle(getX(), getY(), getLargura(), getAltura());
+		Rectangle rCima = new Rectangle(s.getX(), s.getY() - Math.abs(velocidadeY), s.getLargura(), Math.abs(velocidadeY));
+		return rBola.intersects(rCima);
 	}
 
 	private boolean bolaColideEmBaixo(Sprite s) {
-		if ((getX() + getLargura()) > s.getX()) {
-			if (getX() < s.getX() + s.getLargura()) {
-				if (getY() <= (s.getY() + s.getAltura())) {
-					if (getY() > (s.getY() + s.getAltura() / 2)) {
-						return true;
-					}
-				}
-			}
-		}
-		
-		return false;
+		Rectangle rBola = new Rectangle(getX(), getY(), getLargura(), getAltura());
+		Rectangle rBaixo = new Rectangle(s.getX(), s.getY() + s.getAltura(), s.getLargura(), Math.abs(velocidadeY));
+		return rBola.intersects(rBaixo);
 	}
 
 	private boolean bolaColideNaEsquerda(Sprite s) {
-		if ((getY() - getAltura()) > s.getY()) {
-			if (getY() < (s.getY() - s.getAltura())) {
-				if ((getX() + getLargura()) >= s.getX()) {
-					if ((getX() + getLargura()) <= (s.getX() + velocidadeX)) {
-						return true;
-					}
-				}
-			}
-		}
-		
-		return false;
+		Rectangle rBola = new Rectangle(getX(), getY(), getLargura(), getAltura());
+		Rectangle rEsquerda = new Rectangle(s.getX() - Math.abs(velocidadeX), s.getY(), Math.abs(velocidadeX), s.getAltura());
+		return rBola.intersects(rEsquerda);
 	}
 
 	private boolean bolaColideNaDireita(Sprite s) {
-		if ((getY() - getAltura()) > s.getY()) {
-			if (getY() < (s.getY() - s.getAltura())) {
-				if (getX() <= (s.getX() + s.getLargura())) {
-					if ((getX() - velocidadeX) >= (s.getX() + s.getLargura())) {
-						return true;
-					}
-				}
-			}
-		}
-		
-		return false;
+		Rectangle rBola = new Rectangle(getX(), getY(), getLargura(), getAltura());
+		Rectangle rDireita = new Rectangle(s.getX() + s.getLargura(), s.getY(), Math.abs(velocidadeX), s.getAltura());
+		return rBola.intersects(rDireita);
 	}
-	
 }

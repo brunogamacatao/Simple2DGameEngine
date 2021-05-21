@@ -49,7 +49,7 @@ public class Arkanoid extends SimpleWindowedGame {
 		bola.mover(this);
 		
 		// checar as colisões da bola com a raquete
-		bola.checaColisao(raquete);
+		bola.checaColisao(raquete, true);
 		
 		// checar as colisões da bola com os tijolos
 		ArrayList<Sprite> tijolosParaRemover = new ArrayList<>();
@@ -57,6 +57,7 @@ public class Arkanoid extends SimpleWindowedGame {
 		for (Sprite t : tijolos) {
 			if (bola.checaColisao(t)) {
 				tijolosParaRemover.add(t); // marco esse tijolo para remover
+				break;
 			}
 		}
 		
