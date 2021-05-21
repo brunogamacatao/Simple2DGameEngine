@@ -11,15 +11,15 @@ import java.util.List;
 import br.brunocatao.s2ge.SimpleWindowedGame;
 
 public class SnakeGame extends SimpleWindowedGame {
-	public static final int TILES_X = 20;
-	public static final int TILES_Y = 20;
+	public static final int TILES_X = 40;
+	public static final int TILES_Y = 40;
 	
 	private boolean gameOver = false;
 	private Point maca; // maçã
 	private List<Point> snake;
 	private int velX = -1;
 	private int velY = 0;
-	private long gameSpeed = 200; // msecs entre os frames
+	private long gameSpeed = 100; // msecs entre os frames
 	
 	public SnakeGame() {
 		super("Snake", 400, 400, Color.WHITE);
