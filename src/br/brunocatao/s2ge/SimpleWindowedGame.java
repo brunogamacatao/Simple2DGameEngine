@@ -2,6 +2,7 @@ package br.brunocatao.s2ge;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -152,6 +153,7 @@ public abstract class SimpleWindowedGame extends JFrame implements KeyListener {
 
 	public void setWidth(int width) {
 		this.width = width;
+		this.canvas.setSize(new Dimension(width, height));
 	}
 
 	public int getHeight() {
@@ -160,6 +162,7 @@ public abstract class SimpleWindowedGame extends JFrame implements KeyListener {
 
 	public void setHeight(int height) {
 		this.height = height;
+		this.canvas.setSize(new Dimension(width, height));
 	}
 	
 	public boolean isKeyPressed(int keyCode) {
@@ -186,5 +189,10 @@ public abstract class SimpleWindowedGame extends JFrame implements KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent evt) {
+	}
+
+	@Override
+	public void setBackground(Color background) {
+		this.background = background;
 	}
 }
