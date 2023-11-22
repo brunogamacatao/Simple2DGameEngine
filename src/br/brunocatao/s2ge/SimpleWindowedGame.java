@@ -1,5 +1,6 @@
 package br.brunocatao.s2ge;
 
+import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 public abstract class SimpleWindowedGame extends JFrame implements KeyListener {
@@ -55,9 +57,12 @@ public abstract class SimpleWindowedGame extends JFrame implements KeyListener {
 		this.setIgnoreRepaint(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		canvas = createCanvas();
+		this.canvas = createCanvas();
 		
-		this.add(canvas);
+		JPanel geral = new JPanel(new BorderLayout());
+		geral.add(BorderLayout.CENTER, canvas);
+		this.setContentPane(geral);
+		
 		this.pack();
 		
 		setupGraphics();

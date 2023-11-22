@@ -10,8 +10,6 @@ import java.util.Map;
 import br.brunocatao.s2ge.SimpleWindowedGame;
 
 public class Sokoban extends SimpleWindowedGame {
-	private static final long serialVersionUID = -1354406462747417235L;
-
 	/*
 	 * Nesse array são definidas as fases do jogo.
 	 * 
@@ -85,7 +83,6 @@ public class Sokoban extends SimpleWindowedGame {
 		setHeight(LEVELS[level].getAltura() * Config.TAMANHO_BLOCO);
 		
 		this.pack();
-		this.setLocationRelativeTo(null);
 	}
 	
 	private Player createPlayer() {
